@@ -12,4 +12,3 @@ for i in range(num_goal):
     if keyboard.is_pressed("x"):
         print("broke")
         break
-#down
