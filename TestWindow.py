@@ -1,8 +1,8 @@
 import tkinter as tk
+import threading
 import time
 
 numtocountto = None
-currentnum = 0
 
 window = tk.Tk()
 window.title("Count")
@@ -32,18 +32,23 @@ DisplayWindow.title("Now it counts")
 DisplayWindow.geometry("400x150")
 DisplayWindow.resizable(False,False)
 
-DisplayNum = tk.Label(DisplayWindow,text=f'Count to this bitch: {numtocountto}')
+DisplayNum = tk.Label(DisplayWindow,text=f'Click to count to: {numtocountto}')
 DisplayNum.pack()
 
 DisplayText = tk.Label(DisplayWindow,height=5,width=30,font=("Arial",25),text=0)
 DisplayText.pack()
 
-def count(event):
-    global currentnum
-    #if currentnum < numtocountto:
-    currentnum += 1
-    DisplayText.config(text=currentnum)
+def count():
+    for currentnum in range(numtocountto):
+        time.sleep(0.5)
+        currentnum += 1
+        DisplayText.config(text=currentnum)
 
-DisplayWindow.bind('<Button-1>',count)
+def Connection(event):
+    DisplayWindow.unbind('<Button-1>')
+    countthread = threading.Thread(target=count)
+    countthread.start()
+
+DisplayWindow.bind('<Button-1>',Connection)
 
 DisplayWindow.mainloop()
